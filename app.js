@@ -29,4 +29,4 @@ app.get(/\.html?$/i, function (req, res) {
 
 app.use('/', routes);
 
-server.listen(3000, 'localhost');
+server.listen(process.env.PORT || 5000);
