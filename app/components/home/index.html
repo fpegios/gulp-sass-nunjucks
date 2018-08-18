@@ -1,0 +1,20 @@
+{% extends "../layout.html" %}
+
+{% block pageTitle %}
+    Home
+{% endblock %}
+
+{% block styles %} 
+    <link href="/dist/css/home/home.min.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block scripts %} 
+    <script src="/dist/js/home/home.min.js"></script>
+{% endblock %}
+
+
+{% block content %} 
+    {{nav.active('home')}}
+
+    <h1>Home</h1>
+{% endblock %}

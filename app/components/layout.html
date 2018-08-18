@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% include "_includes/head.html" %}
+  
+  <title>
+  {% block pageTitle %} {% endblock %}
+  </title>
+
+  {% include "_includes/styles.html" %}
+
+  {% block styles %} {% endblock %}
+
+</head>
+
+<body>
+  {% import '_macros/nav-macro.njk' as nav %}
+
+  {% block content %} {% endblock %}
+
+  {% include "_includes/scripts.html" %}
+
+  {% block scripts %} {% endblock %}
+
+</body>
+</html>

@@ -16,15 +16,17 @@ const BROWSER_SYNC_RELOAD_DELAY = 500;
 // project files' paths
 const paths = {
     styles: {
-        src: ['app/assets/sass/vendor/*.scss', 'app/assets/sass/vendor/*.css', 'app/assets/sass/**/*.scss'],
+        watch: ['app/app.scss', 'app/components/**/*.scss'],
+        src: ['app/assets/sass/*.scss', 'app/app.scss', 'app/components/**/*.scss'],
         dest: 'dist/css/'
     },
     scripts: {
-        src: ['app/assets/javascript/vendor/*.js', 'app/assets/javascript/**/*.js'],
+        watch: ['app/assets/js/*.js', 'app/app.js', 'app/components/**/*.js'],
+        src: ['app/assets/js/*.js', 'app/app.js', 'app/components/**/*.js'],
         dest: 'dist/js/'
     },
     views: {
-        src: ['app/views/**/*.*']
+        src: ['app/layout.html', 'app/components/**/*.html', 'app/components/_includes/**/*.html', 'app/components/_macros/**/*.njk']
     }
 };
 
@@ -35,7 +37,7 @@ gulp.task('nodemon', function (cb) {
         // nodemon our expressjs server
         script: 'app.js',
         // watch core server file(s) that require server restart on change
-        watch: ['app.js', 'app/routes.js']
+        watch: ['app.js', 'app/app.routes.js']
     })
         .on('start', function onStart() {
             // ensure start only got called once
@@ -81,12 +83,11 @@ gulp.task('clean', function () {
 
 // convert .scss to .css and uglify it
 gulp.task('styles', function () {
-    return gulp.src("app/assets/sass/app.scss", { sourcemaps: true })
+    return gulp.src(paths.styles.src, { sourcemaps: true })
         .pipe(bulkSass())
         .pipe(sass())
         .pipe(cleanCSS())
         .pipe(rename({
-            basename: 'main',
             suffix: '.min'
         }))
         .pipe(gulp.dest(paths.styles.dest));
@@ -96,18 +97,19 @@ gulp.task('styles', function () {
 gulp.task('scripts', function () {
     return gulp.src(paths.scripts.src, { sourcemaps: true })
         .pipe(uglify())
-        .pipe(concat('main.min.js'))
+        .pipe(rename({
+            suffix: '.min'
+        }))
         .pipe(gulp.dest(paths.scripts.dest));
 });
 
 // update style file (watch)
 gulp.task('update-styles', function () {
-    return gulp.src("app/assets/sass/app.scss", { sourcemaps: true })
+    return gulp.src(paths.styles.src, { sourcemaps: true })
         .pipe(bulkSass())
         .pipe(sass())
         .pipe(cleanCSS())
         .pipe(rename({
-            basename: 'main',
             suffix: '.min'
         }))
         .pipe(gulp.dest(paths.styles.dest))
@@ -118,14 +120,16 @@ gulp.task('update-styles', function () {
 gulp.task('update-scripts', function () {
     return gulp.src(paths.scripts.src, { sourcemaps: true })
         .pipe(uglify())
-        .pipe(concat('main.min.js'))
+        .pipe(rename({
+            suffix: '.min'
+        }))
         .pipe(gulp.dest(paths.scripts.dest))
         .pipe(browserSync.stream());
 });
 // watch all files
 gulp.task('watch', function () {
-    gulp.watch(paths.scripts.src, gulp.parallel('update-scripts'));
-    gulp.watch(paths.styles.src,  gulp.parallel('update-styles'));
+    gulp.watch(paths.scripts.watch, gulp.parallel('update-scripts'));
+    gulp.watch(paths.styles.watch,  gulp.parallel('update-styles'));
 });
 
 // start nodemon and browser-sync

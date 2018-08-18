@@ -1,0 +1,20 @@
+{% extends "../layout.html" %}
+
+{% block pageTitle %}
+    About
+{% endblock %}
+
+{% block styles %} 
+    <link href="/dist/css/about/about.min.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block scripts %} 
+    <script src="/dist/js/about/about.min.js"></script>
+{% endblock %}
+
+
+{% block content %} 
+    {{nav.active('about')}}
+
+    <h1>About</h1>
+{% endblock %}

@@ -4,14 +4,15 @@ const nunjucks = require('nunjucks');
 const app = express();
 const server = http.createServer(app);
 const path = require('path')
-const routes = require('./app/routes.js')
+const routes = require('./app/app.routes.js')
 
 app.set('view engine', 'html');
 
 // Middleware to serve static assets
 app.use('/dist', express.static(path.join(__dirname, '/dist')))
+app.use('/app/assets', express.static(path.join(__dirname, '/app/assets')))
 
-nunjucks.configure('app/views', {
+nunjucks.configure('app/components', {
     autoescape: true,
     express: app,
     noCache: true,
